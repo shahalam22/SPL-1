@@ -1,0 +1,321 @@
+Project Plan: Google's PageRank Algorithm Implementation
+
+
+
+1. Project Setup and Initialization (50 LOC):
+
+#Set up the project structure.
+#Initialize the necessary data structures, like the web graph and PageRank scores.
+#Read input data (web graph and links) from files or generate sample data.
+
+	1.1 Project Structure and Setup:
+		Create a new directory for your project.
+		Organize the project structure with separate folders for source code, input data, output, and any other necessary components.
+		Write the main README file explaining the project's purpose, setup instructions, and usage.
+
+	1.2 Initialization:
+		Create a main C file (e.g., main.c) where the program's entry point resides.
+		Set up a basic Makefile to compile your project.
+		Initialize a version control system (e.g., Git) to track your project's changes.
+
+	1.3 Data Structures Setup:
+		Define a data structure for representing web pages. Include fields such as URL, ID, outgoing links, etc.
+		Define a data structure to store the web graph. This could be an adjacency list or an adjacency matrix.
+
+	1.4 Input Data Handling:
+		Create input files containing the web graph data (e.g., links between pages).
+		Implement functions to read and parse input data from these files into your defined data structures.
+		Implement data validation to ensure the input is correctly formatted.
+
+	1.5 Sample Data Generation (Optional):
+		If real web data is not available, create functions to generate sample web graphs for testing and development.
+		Ensure that generated graphs maintain realistic properties, such as varying degrees of node connectivity.
+
+	1.6 Initialization Functions:
+		Write functions to initialize the web graph and associated data structures.
+		Allocate memory for nodes and edges dynamically based on the input size.
+		Set initial PageRank scores for each page, considering equal distribution or other initialization strategies.
+
+	1.7 Error Handling:
+		Implement comprehensive error-handling mechanisms to deal with issues such as file reading errors, memory allocation failures, etc.
+		Include meaningful error messages and proper error codes.
+
+	1.8 Commenting and Documentation:
+		Add extensive comments explaining the purpose and functionality of each component.
+		Write a brief documentation section within the README file, explaining the purpose and usage of the initialization phase.
+
+	1.9 Project Testing:
+		Write a suite of test cases to rigorously verify that your initialization functions are working correctly.
+		Consider using a testing framework (if desired) to automate the testing process and provide detailed test reports.
+
+	1.10 User Interface Planning (Optional):
+		If you plan to implement a user interface, design the structure and flow of user interactions.
+		Sketch out mock-ups or wireframes to visualize the user interface components.
+
+	1.11 Version Control Commit:
+		Make an initial commit in your version control system to mark the setup and initialization phase.
+
+
+
+2. Graph Representation and Data Structures (150 LOC):
+
+Define data structures for representing web pages and their links.
+Implement functions to create and populate the graph from input data.
+
+	2.1 Define Page Structure (30 LOC):
+		Create a struct to represent a web page. Include fields like URL, ID, outgoing links, and possibly other attributes.
+		Implement functions to initialize, update, and access page data.
+
+	2.2 Graph Data Structure (80 LOC):
+		Choose between an adjacency list or an adjacency matrix representation for the web graph.
+		Implement the chosen data structure to store the relationships between web pages.
+		Include functions for adding nodes and edges, as well as querying node details.
+
+	2.3 Loading Graph Data (70 LOC):
+		Implement functions to read and parse input data files that define web page relationships.
+		Populate your graph data structure with the parsed information.
+
+	2.4 Graph Manipulation Functions (100 LOC):
+		Develop functions to navigate the graph, such as finding neighbors of a node and checking for the presence of a specific link.
+		Implement functions to calculate the outdegree of a node and identify nodes with no outgoing links (dangling nodes).
+
+	2.5 Data Validation (60 LOC):
+		Implement validation checks for graph data to detect inconsistencies, such as nodes with no incoming links, circular references, etc.
+		Ensure data consistency before proceeding with PageRank calculations.
+
+	2.6 Additional Features (250 LOC +)
+		Directed vs. Undirected Graphs (50 LOC):
+			Extend your graph data structure to support both directed and undirected graphs, if not already implemented.
+
+		Weighted Edges (80 LOC):
+			Modify your graph data structure to handle weighted edges. This can be useful for incorporating edge importance.
+
+		Sparse Matrix Representation (120 LOC):
+			Implement a sparse matrix representation for the adjacency matrix, which can significantly reduce memory usage for large graphs.
+
+
+
+3. Transition Matrix and PageRank Calculation (250 LOC):
+
+Calculate the transition matrix based on the web graph.
+Implement the iterative PageRank algorithm to compute PageRank scores.
+Define convergence criteria and stopping conditions for the algorithm.
+
+	3.1 Transition Matrix Calculation (180 LOC):
+		Implement functions to calculate the transition matrix based on the graph structure.
+		Account for the probability of transitioning from each page to its linked pages.
+
+	3.2 PageRank Algorithm (350 LOC):
+		Set up the iterative PageRank algorithm using the transition matrix.
+		Implement the core loop that updates PageRank scores until convergence or a predetermined number of iterations.
+
+	3.3 Convergence Criteria (60 LOC):
+		Define and implement criteria for determining when the PageRank algorithm has converged.
+		For example, you might compare the PageRank scores between iterations and stop when the change is below a threshold.
+
+	3.4 Handling Damping Factor (50 LOC):
+		Implement the damping factor (teleportation probability) in the PageRank algorithm.
+		Experiment with different damping factor values and observe their effects on the PageRank results.
+
+	3.5 Monitoring and Logging (60 LOC):
+		Add logging to keep track of the PageRank scores during iterations.
+		Implement a progress indicator to show the convergence process to users.
+
+	3.6 Additional Features (300 LOC +)
+		Matrix Multiplication Optimization (150 LOC):
+			Implement optimizations for matrix multiplication, such as using parallel processing or more efficient algorithms, to improve performance.
+
+		Ranking Visualization (100 LOC):
+			Create a visualization that ranks pages according to their calculated PageRank scores, allowing users to see the importance hierarchy.
+
+		Alternative Convergence Criteria (50 LOC):
+			Implement convergence criteria beyond score stability, such as tracking the top-k pages that have changed the most between iterations.
+
+
+
+4. Handling Dangling and Sink Nodes (100 LOC):
+
+Implement strategies for handling dangling nodes and sink nodes in the web graph.
+
+	4.1 Dangling Node Handling (120 LOC):
+		Identify dangling nodes (nodes with no outgoing links) in your graph.
+		Distribute the PageRank score of dangling nodes evenly among all nodes during each iteration.
+
+	4.2 Sink Node Handling (120 LOC):
+		Recognize sink nodes (nodes with no outgoing links but incoming links) in your graph.
+		Modify the PageRank algorithm to distribute a fraction of the teleportation probability equally among sink nodes.
+
+	4.3 Uniform Teleportation (70 LOC):
+		Implement a version of the algorithm where the teleportation probability is evenly distributed among all nodes.
+
+	4.4 Handling Negative Cycles (100 LOC):
+		Identify and handle cases where the graph contains negative cycles that can prevent the algorithm from converging.
+		Implement solutions like limiting the number of iterations or applying relaxation techniques.
+
+	4.5 Additional Features (200 LOC +)
+		Power Iteration Method (100 LOC):
+			Explore the power iteration method, an alternative to the iterative approach, to calculate PageRank scores.
+
+		Local PageRank (100 LOC):
+			Implement a local version of PageRank, where the focus is on the neighborhood of a specific node rather than the entire graph.
+
+
+
+5. Visualization and Output (100 LOC):
+
+Implement a simple visualization of the web graph and PageRank scores.
+Display the final PageRank scores for each page.
+
+	5.1 PageRank Score Output (70 LOC):
+		Implement functions to display the final PageRank scores for each page.
+		Format and output the scores in a clear and organized manner.
+
+	5.2 Basic Graph Visualization (150 LOC):
+		Integrate a simple graph visualization library (e.g., Graphviz) to create a visual representation of the web graph.
+		Display nodes as circles, edges as lines, and annotate nodes with their PageRank scores.
+
+	5.3 Iteration Visualization (100 LOC):
+		During the iterative process, visualize how PageRank scores change for a subset of nodes over iterations.
+		Create line charts showing the evolution of scores for a user-specified number of nodes.
+
+	5.4 Interactive Visualization (200 LOC):
+		Enhance the basic visualization with interactive features, allowing users to explore the graph and PageRank scores.
+		Implement zooming, panning, and tooltip displays for nodes with additional information.
+
+	5.5 Additional Features (300 LOC +)
+		Node Color Coding (100 LOC):
+			Color-code nodes based on their PageRank scores, providing a visual representation of their importance.
+
+		Ranking Comparison Visualization (150 LOC):
+			Implement a side-by-side visualization comparing the ranking order of pages from different iterations or algorithms.
+
+		Export Visualization Images (50 LOC):
+			Add functionality to export the generated visualizations as image files (e.g., PNG or SVG) for further analysis or reporting.
+
+
+
+6. Additional Features (500 LOC):
+
+	Multithreading Support (150 LOC):
+		Implement multithreading to parallelize PageRank computation for faster processing.
+		
+		1. Multithreading Setup and Initialization (50 LOC):
+			Include necessary header files for multithreading (e.g., <pthread.h> for POSIX threads).
+			Initialize thread-related data structures and synchronization mechanisms.
+
+		2. Multithreaded PageRank Computation (300 LOC):
+			Divide the graph into segments or partitions for parallel processing by multiple threads.
+			Implement a thread pool or worker threads to concurrently compute PageRank scores for different segments.
+			Synchronize threads to ensure correct updates to PageRank scores and data structures.
+
+		3. Thread Safety and Data Sharing (100 LOC):
+			Implement appropriate locking mechanisms (e.g., mutexes) to ensure thread safety when accessing shared data structures.
+			Use thread-local storage or other techniques to minimize contention and improve performance.
+
+		4. Performance Monitoring and Profiling (50 LOC):
+			Implement mechanisms to measure the performance improvement gained from multithreading.
+			Profile the execution time and resource usage to identify potential bottlenecks.
+
+		5. Additional Features (200 LOC +)
+
+			Dynamic Thread Pool Sizing (100 LOC):
+				Implement a dynamic thread pool that adjusts the number of threads based on the available hardware resources.
+
+			Task Queue with Work Stealing (100 LOC):
+				Implement a task queue with work-stealing mechanisms to balance the workload among threads efficiently.
+
+		Extended Features:
+
+			Thread Affinity and Load Balancing (150 LOC):
+				Enhance multithreading by implementing thread affinity and load balancing techniques to optimize core utilization.
+
+			Task Parallelism for Matrix Operations (150 LOC):
+				Extend multithreading to accelerate matrix operations in cases where they are used (e.g., matrix-vector multiplication).
+
+			Hybrid Parallelism (150 LOC):
+				Combine multithreading with vectorization (SIMD) to fully exploit modern processors' capabilities.
+
+
+	Personalized PageRank (150 LOC):
+		Extend the algorithm to support personalized PageRank computation based on user preferences.
+
+		1. User Preferences Input (60 LOC):
+			Implement a mechanism for users to input their preferences, such as selecting specific pages or topics of interest.
+			Design an interface that allows users to provide personalized preferences.
+
+		2. Personalization Vector Calculation (150 LOC):
+			Based on the user preferences, create a personalized vector that represents the teleportation probabilities for each page.
+			Adjust the PageRank algorithm to incorporate the personalized vector during the computation.
+
+		3. Personalized PageRank Algorithm (300 LOC):
+			Modify the PageRank algorithm to consider the personalized vector while calculating scores.
+			Implement the iteration loop that updates personalized PageRank scores.
+
+		4. Result Presentation (80 LOC):
+			Display the personalized PageRank scores along with the original PageRank scores.
+			Provide visualizations that highlight the differences between the two sets of scores.
+
+		5. Additional Features (200 LOC +)
+			User Profiles (100 LOC):
+				Extend the user preferences system to allow for saving and loading user profiles, allowing users to switch between different preferences easily.
+
+			Content-Based Preferences (150 LOC):
+				Implement a mechanism for users to input preferences based on content keywords or tags, and adapt the personalized vector accordingly.
+
+		Extended Features:
+
+			Dynamic User Feedback (150 LOC):
+				Implement a feedback loop where users' interactions and clicks influence their preferences and the personalized PageRank scores over time.
+
+			Preference Weighting (100 LOC):
+				Allow users to assign weights to their preferences, indicating the relative importance of different topics or pages.
+
+			Hybrid Personalized Ranking (200 LOC):
+				Combine personalized PageRank with other ranking algorithms (e.g., TF-IDF) to provide a more comprehensive ranking mechanism.
+
+
+	Topic-Specific PageRank (150 LOC):
+	Implement a variation of PageRank that considers the topical relevance of pages.
+
+		1. Topic Identification and Input (60 LOC):
+			Implement a function to allow users to input the topic of interest.
+			Prompt users to enter a specific topic using a command-line interface.
+
+		2. Topic-Specific Transition Matrix (200 LOC):
+			Create a data structure (e.g., matrix or array) to represent the topic-specific transition matrix.
+			Implement a function to modify the transition matrix based on the topic's relevance to each page.
+
+		3. Topic-Specific PageRank Algorithm (350 LOC):
+			Adapt the PageRank algorithm to use the topic-specific transition matrix during each iteration.
+			Update the PageRank scores based on the modified matrix.
+
+		4. Result Presentation (100 LOC):
+			Implement functions to display the topic-specific PageRank scores alongside the original PageRank scores.
+			Highlight the pages that are most relevant to the chosen topic.
+
+		Features:
+
+			Topic Relevance Scoring (150 LOC):
+				Implement a function to score each page's relevance to the chosen topic based on content analysis or other methods.
+
+			Topic Selection from Keywords (100 LOC):
+				Allow users to enter keywords related to a topic, and determine the topic based on the provided keywords
+
+
+	Graph Visualization with Graphviz (50 LOC):
+	Integrate Graphviz to generate graphical representations of the web graph and PageRank scores.
+
+7. Documentation and Testing (150 LOC):
+
+	Write documentation explaining the project's purpose, design, and usage.
+	Implement unit tests to verify the correctness of your PageRank implementation.
+
+8. User Interface (200 LOC):
+
+	Develop a basic command-line interface (CLI) for users to interact with the program.
+	Allow users to input their own graph data, configure parameters, and visualize results.
+
+9. Optimization and Refinement (100 LOC):
+
+	Optimize the code for performance and memory usage.
+	Refactor and improve code structure based on feedback.
