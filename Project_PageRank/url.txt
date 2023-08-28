@@ -1,0 +1,6 @@
+http://www.sample.edu/#haircut
+http://sample.edu/beef?pump=cats
+http://www.sample.edu/plate
+https://www.sample.info/
+http://sample.info/note.aspx
+https://sample.com/stone.php
