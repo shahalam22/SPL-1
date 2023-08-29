@@ -46,16 +46,16 @@ Project Plan: Google's PageRank Algorithm Implementation
 Define data structures for representing web pages and their links.
 Implement functions to create and populate the graph from input data.
 
-	2.1 Define Page Structure (30 LOC):
+	2.1 Define Page Structure (30 LOC): DONE
 		Create a struct to represent a web page. Include fields like URL, ID, outgoing links, and possibly other attributes.
 		Implement functions to initialize, update, and access page data.
 
-	2.2 Graph Data Structure (80 LOC):
+	2.2 Graph Data Structure (80 LOC): DONE
 		Choose between an adjacency list or an adjacency matrix representation for the web graph.
 		Implement the chosen data structure to store the relationships between web pages.
 		Include functions for adding nodes and edges, as well as querying node details.
 
-	2.3 Loading Graph Data (70 LOC):
+	2.3 Loading Graph Data (70 LOC): DONE
 		Implement functions to read and parse input data files that define web page relationships.
 		Populate your graph data structure with the parsed information.
 

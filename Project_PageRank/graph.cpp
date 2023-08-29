@@ -3,12 +3,14 @@
 #include "page.h"
 using namespace std;
 
+
 //creating relevent vectors
 vector<vector<int>> matrix{};
 vector<string> url{};
 vector<string> id{};
 //creating webpages
 vector<Page> webPages{};
+
 
 // ADDNEW WEBPAGE FUNCTION
 void addNewPage(string address, string idNo, vector<int> inLinks, vector<int> outLinks){
@@ -27,6 +29,24 @@ void addNewPage(string address, string idNo, vector<int> inLinks, vector<int> ou
     webPages.push_back(tempPage);
 }
 
+
+// VALID SITE FUNCTION - is a function exists in the graph or not
+void validSite(string address){
+    int flag = -1;
+    for(int i=0; i<webPages.size(); i++){
+        if(webPages.at(i).getName() == address){
+            flag = i;
+            break;
+        }
+    }
+
+    if(flag==-1){
+        cout << "Page not found." << endl;
+    }else{
+        webPages.at(flag).printPage();
+        cout << endl;
+    }
+}
 
 
 // MAIN FUNCTION
@@ -128,4 +148,18 @@ int main (void){
     //     }
     //     cout << endl;
     // }
+
+
+    // // printing neighbour pages function test
+    // webPages.at(2).Neighbours("https://www.sample.info/", webPages, matrix);
+    // webPages.at(3).Neighbours("http://www.sample.edu/plate" ,webPages, matrix);
+    // webPages.at(4).Neighbours("http://sample.info/note.aspx" ,webPages, matrix);
+
+
+    // // validSite() function test
+    // validSite("http://www.sample.edu/plate");
+    // validSite("habijabi");
+
+
+
 }
