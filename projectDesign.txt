@@ -59,7 +59,7 @@ Implement functions to create and populate the graph from input data.
 		Implement functions to read and parse input data files that define web page relationships.
 		Populate your graph data structure with the parsed information.
 
-	2.4 Graph Manipulation Functions (100 LOC):
+	2.4 Graph Manipulation Functions (100 LOC): DONE
 		Develop functions to navigate the graph, such as finding neighbors of a node and checking for the presence of a specific link.
 		Implement functions to calculate the outdegree of a node and identify nodes with no outgoing links (dangling nodes).
 

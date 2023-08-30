@@ -30,7 +30,7 @@ void addNewPage(string address, string idNo, vector<int> inLinks, vector<int> ou
 }
 
 
-// VALID SITE FUNCTION - is a function exists in the graph or not
+// VALID SITE FUNCTION - is a page exists in the graph or not
 void validSite(string address){
     int flag = -1;
     for(int i=0; i<webPages.size(); i++){
@@ -136,18 +136,18 @@ int main (void){
     // addNewPage("http://www.sample.org/eating.html", "Okiba4", newInLink2, newOutLink2);
 
 
-    // //printing web pages
-    // for(int i=0; i<url.size(); i++){
-    //     webPages[i].printPage();
-    //     cout << endl;
-    // }
+    //printing web pages
+    for(int i=0; i<url.size(); i++){
+        webPages[i].printPage();
+        cout << endl;
+    }
 
-    // for(int i=0; i<matrix.size(); i++){
-    //     for(int j=0; j<matrix.size(); j++){
-    //         cout << matrix[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
+    for(int i=0; i<matrix.size(); i++){
+        for(int j=0; j<matrix.size(); j++){
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
 
 
     // // printing neighbour pages function test
@@ -160,6 +160,21 @@ int main (void){
     // validSite("http://www.sample.edu/plate");
     // validSite("habijabi");
 
+
+    // //adding new Dangling Node
+    // vector<int> newInLink1 = {0,0,1,0,1,0,0};
+    // vector<int> newOutLink1 = {0,0,0,0,0,0,0};
+    // addNewPage("http://www.sample.org/sleep.html", "HgO8a4", newInLink1, newOutLink1);
+
+    // // printing dangling nodes
+    // cout << "\nDangling Nodes are : \n";
+    // int flagFordangling = 0;
+    // for(int i=0; i<webPages.size(); i++){
+    //     if(webPages.at(i).isDangling()){
+    //         flagFordangling = 1;
+    //         webPages.at(i).printPage();
+    //     }
+    // }
 
 
 }

@@ -7,6 +7,7 @@ class Page{
     private: 
     string url;
     string id;
+    bool isDanglingNode = true;
     vector<int> outLinks{};
     
     public:
@@ -16,6 +17,7 @@ class Page{
         url = address;
         id = idNo;
         for(int i=0; i<arr.size(); i++){
+            if(arr[i]==1) isDanglingNode = false;
             outLinks.push_back(arr[i]);
         }
     }
@@ -29,7 +31,9 @@ class Page{
     }
     void updateOutLinks(vector<int> arr){
         outLinks.clear();
+        isDanglingNode = true;
         for(int i=0; i<arr.size(); i++){
+            if(arr[i]==1) isDanglingNode = false;
             outLinks.push_back(arr[i]);
         }
     }
@@ -76,6 +80,11 @@ class Page{
         //     cout << outLinks[i] << " ";
         // }
         cout << endl;
+    }
+
+    // Returns this node is dangling or not
+    bool isDangling(){
+        return isDanglingNode;
     }
 
     //print name function
