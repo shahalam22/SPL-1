@@ -49,13 +49,8 @@ void validSite(string address){
 }
 
 
-// MAIN FUNCTION
-int main (void){    
-    int n = 6;
-    // cout << "Enter the dimension of the matrix" << endl;
-    // cin >> n;
-
-
+// GRAPH INITIALIZE FUNCTION
+void initializeGraph(int n){
     //initializing URL vector
     fstream urlFile;
     urlFile.open("url.txt");
@@ -102,6 +97,53 @@ int main (void){
     }
     matrixFile.close();
 
+    //initializing properties of the webpage
+    for(int i=0; i<url.size(); i++){
+        Page tempPage;
+        tempPage.getdata(url[i], id[i], matrix[i]);
+        webPages.push_back(tempPage);
+    }
+}
+
+
+// DANGLING NODE FUNCTION
+vector<Page> danglingNodes(){
+    vector<Page> Dpages{};
+    for(int i=0; i<webPages.size(); i++){
+        if(webPages.at(i).isDangling()){
+            Dpages.push_back(webPages.at(i));
+        }
+    }
+    return Dpages;
+}
+
+
+// PRINTING ALL THE WEBPAGES IN THE GRAPH
+void printAllPagesDetails(){
+    for(int i=0; i<url.size(); i++){
+        webPages[i].printPage();
+        cout << endl;
+    }
+}
+
+
+// PRINTING THE TRANSITION MATRIX
+void printTransitionMatrix(){
+    for(int i=0; i<matrix.size(); i++){
+        for(int j=0; j<matrix.size(); j++){
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// MAIN FUNCTION
+int main (void){    
+    int n = 6;
+    // cout << "Enter the dimension of the matrix" << endl;
+    // cin >> n;
+
+    initializeGraph(n);
 
     // //test print of URL, ID, MATRIX vectors
     // for(int i=0; i<url.size(); i++){
@@ -118,14 +160,6 @@ int main (void){
     // }
 
 
-    //initializing properties of the webpage
-    for(int i=0; i<url.size(); i++){
-        Page tempPage;
-        tempPage.getdata(url[i], id[i], matrix[i]);
-        webPages.push_back(tempPage);
-    }
-
-
     // //adding new nodes in the graph
     // vector<int> newInLink1 = {0,0,1,0,1,0,0};
     // vector<int> newOutLink1 = {0,1,1,0,0,0,1};
@@ -136,18 +170,9 @@ int main (void){
     // addNewPage("http://www.sample.org/eating.html", "Okiba4", newInLink2, newOutLink2);
 
 
-    //printing web pages
-    for(int i=0; i<url.size(); i++){
-        webPages[i].printPage();
-        cout << endl;
-    }
-
-    for(int i=0; i<matrix.size(); i++){
-        for(int j=0; j<matrix.size(); j++){
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
+    // // //printing web pages
+    // printAllPagesDetails();
+    // printTransitionMatrix();
 
 
     // // printing neighbour pages function test
@@ -168,13 +193,9 @@ int main (void){
 
     // // printing dangling nodes
     // cout << "\nDangling Nodes are : \n";
-    // int flagFordangling = 0;
-    // for(int i=0; i<webPages.size(); i++){
-    //     if(webPages.at(i).isDangling()){
-    //         flagFordangling = 1;
-    //         webPages.at(i).printPage();
-    //     }
+    // vector<Page> Dpages = danglingNodes();
+    // for(int i=0; i<Dpages.size(); i++){
+    //     Dpages.at(i).printPage();
     // }
-
 
 }
