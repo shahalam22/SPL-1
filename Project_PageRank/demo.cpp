@@ -1,35 +1,43 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
 using namespace std;
 
-vector<vector<int>> inLinkVector;
+
+void printPageRankProbability(double pageProbability[], int size){
+    cout << "Page Rank Probability : ";
+    for(int i=1; i<=size; i++){
+        printf("%lf ", pageProbability[i]);
+    }
+}
 
 int main(){
-    fstream inlinkFile;
-    inlinkFile.open("outLinks.txt");
-    if(!inlinkFile){
-        cout << "Such MATRIX file doesn't exist!" << endl;
-    }else{
-        while(inlinkFile){
-            vector<int> temp{};
-            string x;
-            std::getline(inlinkFile, x);
-            for(char &c : x){
-                if(c != ','){
-                    int p = c-'0';
-                    temp.push_back(p);
-                }
-            }
-            inLinkVector.push_back(temp);
-        }
-    }
-    inlinkFile.close();
+    double generalMatrix[7][7] = {0, 0, 0, 0, 0, 0, 0,
+                            0, 0.00, 0.33, 0.00, 0.33, 0.00, 0.33,
+                            0, 0.50, 0.00, 0.50, 0.00, 0.00, 0.00,
+                            0, 0.50, 0.00, 0.00, 0.50, 0.00, 0.00,
+                            0, 0.00, 0.00, 0.50, 0.00, 0.00, 0.50,
+                            0, 0.33, 0.33, 0.33, 0.00, 0.00, 0.00,
+                            0, 0.00, 0.33, 0.00, 0.33, 0.33, 0.00};
+    double pageRankProbability[7] = {0, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667};
+    int size = 6;
 
-    for(int i=0; i<inLinkVector.size(); i++){
-        for(int j=0; j<inLinkVector.at(i).size(); j++){
-            cout << inLinkVector.at(i).at(j) << " ";
+    double demoPageProbability[size];
+
+    for(int m=0; m<5; m++){
+        for(int i=1; i<=size; i++){
+            demoPageProbability[i] = pageRankProbability[i];
         }
+
+        for(int j=1; j<=size; j++){
+            double demo = 0;
+            for(int k=1; k<=size; k++){
+                demo += generalMatrix[j][k]*pageRankProbability[k];
+                // cout << demo << "  ";
+            }
+            pageRankProbability[j] = demo;
+        }
+        printPageRankProbability(demoPageProbability, size);
+        cout << "\t";
+        printPageRankProbability(pageRankProbability, size);
         cout << endl;
     }
 }

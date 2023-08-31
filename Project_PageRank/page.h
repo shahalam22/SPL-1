@@ -9,16 +9,18 @@ class Page{
 
     string url;
     string id;
+    int index;
     bool isDanglingNode = true;
-    vector<string> outLinks{};
-    vector<string> inLinks{};
+    vector<int> outLinks{};
+    vector<int> inLinks{};
     
     public:
 
     //initializing properties of an object of Page class
-    void initializeData(string address, string idNo, vector<string> in, vector<string> out){
+    void initializeData(string address, string idNo, int indexNo, vector<int> in, vector<int> out){
         url = address;
         id = idNo;
+        index = indexNo;
         for(int i=0; i<in.size(); i++){
             inLinks.push_back(in.at(i));
         }
@@ -42,7 +44,7 @@ class Page{
         id = idNo;
     }
 
-    void updateInLinks(vector<string> in){
+    void updateInLinks(vector<int> in){
         inLinks.clear();
         for(int i=0; i<in.size(); i++){
             inLinks.push_back(in.at(i));
@@ -54,7 +56,7 @@ class Page{
         }
     }
 
-    void updateOutLinks(vector<string> out){
+    void updateOutLinks(vector<int> out){
         outLinks.clear();
         for(int i=0; i<out.size(); i++){
             outLinks.push_back(out.at(i));
@@ -71,6 +73,7 @@ class Page{
     void printPage(){
         cout << "URL of the page is : " << url << endl;
         cout << "Id of the page is : " << id << endl;
+        cout << "Index of the page is : " << index << endl;
         // cout << "Out Links from the page is : ";
         // for(int i=0; i<outLinks.size(); i++){
         //     cout << outLinks[i] << " ";
@@ -100,6 +103,14 @@ class Page{
         return id;
     }
 
+    int getIndex(){
+        return index;
+    }
+
+    vector<int> getOutLinks(){
+        return outLinks;
+    }
+
 
     //find neighbours
     void Neighbours(vector<Page> webPages){
@@ -107,7 +118,7 @@ class Page{
         cout << "OutLink pages of this page are : \n\n";
         for(int i=0; i<outLinks.size(); i++){
             for(int j=0; j<webPages.size(); j++){
-                if(outLinks.at(i) == webPages.at(j).getId()){
+                if(outLinks.at(i) == webPages.at(j).getIndex()){
                     webPages.at(j).printPage();
                 }
             }
@@ -117,7 +128,7 @@ class Page{
         cout << "InLink pages of this page are : \n\n";
         for(int i=0; i<inLinks.size(); i++){
             for(int j=0; j<webPages.size(); j++){
-                if(outLinks.at(i) == webPages.at(j).getId()){
+                if(outLinks.at(i) == webPages.at(j).getIndex()){
                     webPages.at(j).printPage();
                 }
             }
