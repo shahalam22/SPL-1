@@ -56,28 +56,30 @@ void initializePageRank(){
 void printPageRankProbability(double pageProbability[]){
     cout << "Page Rank Probability : ";
     for(int i=1; i<=webPages.size(); i++){
-        printf("%7.6lf", pageProbability[i]);
+        printf("%7.6lf  ", pageProbability[i]);
     }
+    cout << endl;
 }
 
 
-// // CONVERGE function
-// bool isConverge(double demoPageProbability[]){
-//     bool flag = true;
-//     for(int i=1; i<-webPages.size(); i++){
-//         if(demoPageProbability[i]!=pageRankProbability[i]){
-//             flag = false;
-//         }
-//     }
-//     return flag;
-// }
+// CONVERGE function
+bool isConverge(double demoPageProbability[]){
+    bool flag = true;
+    for(int i=1; i<=webPages.size(); i++){
+        if(demoPageProbability[i]!=pageRankProbability[i]){
+            flag = false;
+        }
+    }
+    return flag;
+}
 
 
 // Page Rank matrix multiplication [without dangling node]
 void nonDanglingPageIteration(){
+
     double demoPageProbability[webPages.size()+1];
 
-    for(int m=0; m<5; m++){
+    while(!isConverge(demoPageProbability)){
         for(int i=1; i<=webPages.size(); i++){
             demoPageProbability[i] = pageRankProbability[i];
         }
@@ -85,17 +87,11 @@ void nonDanglingPageIteration(){
         for(int j=1; j<=webPages.size(); j++){
             double demo = 0;
             for(int k=1; k<=webPages.size(); k++){
-                demo += generalMatrix[j][k]*pageRankProbability[k];
-                
+                // demo += generalMatrix[k][j]*pageRankProbability[k];
+                demo += pageRankProbability[k]*generalMatrix[k][j];
             }
             pageRankProbability[j] = demo;
         }
-
-        // printPageRankProbability(demoPageProbability);
-        // cout << "\t";
-        // printPageRankProbability(pageRankProbability);
-        // cout << endl;
-
     }
 }
 
@@ -107,11 +103,11 @@ int main (void){
 
     creatematrix();
 
-    // printTransitionMatrix();
+    printTransitionMatrix();
 
     initializePageRank();
 
-    // printPageRankProbability(pageRankProbability);
+    printPageRankProbability(pageRankProbability);
 
     nonDanglingPageIteration();
 
