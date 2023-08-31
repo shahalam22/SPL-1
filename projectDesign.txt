@@ -85,19 +85,19 @@ Calculate the transition matrix based on the web graph.
 Implement the iterative PageRank algorithm to compute PageRank scores.
 Define convergence criteria and stopping conditions for the algorithm.
 
-	3.1 Transition Matrix Calculation (180 LOC):
+	3.1 Transition Matrix Calculation (180 LOC): DONE
 		Implement functions to calculate the transition matrix based on the graph structure.
 		Account for the probability of transitioning from each page to its linked pages.
 
-	3.2 PageRank Algorithm (350 LOC):
+	3.2 PageRank Algorithm (350 LOC): DONE
 		Set up the iterative PageRank algorithm using the transition matrix.
 		Implement the core loop that updates PageRank scores until convergence or a predetermined number of iterations.
 
-	3.3 Convergence Criteria (60 LOC):
+	3.3 Convergence Criteria (60 LOC): DONE
 		Define and implement criteria for determining when the PageRank algorithm has converged.
 		For example, you might compare the PageRank scores between iterations and stop when the change is below a threshold.
 
-	3.4 Handling Damping Factor (50 LOC):
+	3.4 Handling Damping Factor (50 LOC): DONE
 		Implement the damping factor (teleportation probability) in the PageRank algorithm.
 		Experiment with different damping factor values and observe their effects on the PageRank results.
 
