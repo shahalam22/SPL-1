@@ -74,10 +74,16 @@ class Page{
         cout << "URL of the page is : " << url << endl;
         cout << "Id of the page is : " << id << endl;
         cout << "Index of the page is : " << index << endl;
-        // cout << "Out Links from the page is : ";
-        // for(int i=0; i<outLinks.size(); i++){
-        //     cout << outLinks[i] << " ";
-        // }
+        cout << "InLinks of this page - ";
+        for(int j=0; j<inLinks.size(); j++){
+            cout << inLinks.at(j) << " ";
+        }
+        cout << endl;
+        cout << "OutLinks of this page - ";
+        for(int j=0; j<outLinks.size(); j++){
+            cout << outLinks.at(j) << " ";
+        }
+        cout << endl;
         cout << endl;
     }
 
@@ -93,11 +99,9 @@ class Page{
         cout << url << endl;
     }
 
-
     string getName(){
         return url;
     }
-
 
     string getId(){
         return id;
@@ -115,21 +119,27 @@ class Page{
     //find neighbours
     void Neighbours(vector<Page> webPages){
         // outlinks
-        cout << "OutLink pages of this page are : \n\n";
+        cout << "OutLink neighbours of this page : \n\n";
         for(int i=0; i<outLinks.size(); i++){
             for(int j=0; j<webPages.size(); j++){
                 if(outLinks.at(i) == webPages.at(j).getIndex()){
-                    webPages.at(j).printPage();
+                    cout << "URL of the page is : " << webPages.at(j).getName() << endl;
+                    cout << "Id of the page is : " << webPages.at(j).getId() << endl;
+                    cout << "Index of the page is : " << webPages.at(j).getIndex() << endl;
+                    cout << endl;
                 }
             }
         }
         cout << endl;
         // inlinks
-        cout << "InLink pages of this page are : \n\n";
+        cout << "InLink neighbours of this page are : \n\n";
         for(int i=0; i<inLinks.size(); i++){
             for(int j=0; j<webPages.size(); j++){
-                if(outLinks.at(i) == webPages.at(j).getIndex()){
-                    webPages.at(j).printPage();
+                if(inLinks.at(i) == webPages.at(j).getIndex()){
+                    cout << "URL of the page is : " << webPages.at(j).getName() << endl;
+                    cout << "Id of the page is : " << webPages.at(j).getId() << endl;
+                    cout << "Index of the page is : " << webPages.at(j).getIndex() << endl;
+                    cout << endl;
                 }
             }
         }
