@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "page.h"
+#include "pageCopy.h"
 using namespace std;
 
 
@@ -11,7 +11,6 @@ vector<string> idList{};
 vector<int> indexList{};
 //creating webpages
 vector<Page> webPages{};
-vector<vector<int>> inLinkVector;
 vector<vector<int>> outLinkVector;
 
 
@@ -20,7 +19,7 @@ void updateGraph(){
     webPages.clear();
     for(int i=0; i<urlList.size(); i++){
         Page tempPage;
-        tempPage.initializeData(urlList.at(i), idList.at(i), indexList.at(i), inLinkVector.at(i), outLinkVector.at(i));
+        tempPage.initializeData(urlList.at(i), idList.at(i), indexList.at(i), outLinkVector.at(i));
         webPages.push_back(tempPage);
     }
 }
@@ -43,22 +42,13 @@ void addNewPage(){
     // Taking user input
     string newURL;
     string newId;
-    int noOfInlinks, noOfOutlinks;
-    vector<int> newInLinks{};
+    int noOfOutlinks;
     vector<int> newOutLinks{};
 
     cout << "Enter URL of the new page - ";
     cin >> newURL;
     cout << "Enter ID of the new page - ";
     cin >> newId;
-    cout << "Enter number of InLinks - ";
-    cin >> noOfInlinks;
-    cout << "Enter inlink nodes index - ";
-    for(int i=0; i<noOfInlinks; i++){
-        int a;
-        cin >> a;
-        newInLinks.push_back(a);
-    }
     cout << "Enter number of OutLinks - ";
     cin >> noOfOutlinks;
     cout << "Enter outlink nodes index - ";
@@ -72,14 +62,12 @@ void addNewPage(){
     urlList.push_back(newURL);
     idList.push_back(newId);
     indexList.push_back(webPages.size()+1);
-    inLinkVector.push_back(newInLinks);
     outLinkVector.push_back(newOutLinks);
 
     // Page tempPage;
     // tempPage.initializeData(newURL, newId, webPages.size()+1, newInLinks, newOutLinks);
     // webPages.push_back(tempPage);
     updateGraph();
-
 
     cout << endl;
 }
@@ -116,40 +104,7 @@ void initialLoad(){
     idFile.close();
 
     //initializing indexList vector
-    fstream indexFile;
-    indexFile.open("indexList.txt");
-    if(!indexFile){
-        cout << "Such ID file doesn't exist!" << endl;
-    }else{
-        for(int i=0; !indexFile.eof(); i++){
-            int tempIndex;
-            indexFile >> tempIndex;
-            indexList.push_back(tempIndex);
-        }
-    }
-    indexFile.close();
-
-    //initializing INLINKS vector
-    fstream inlinkFile;
-    inlinkFile.open("inLinks.txt");
-    if(!inlinkFile){
-        cout << "Such outlink vector file doesn't exist!" << endl;
-    }else{
-        for(int i=0; !inlinkFile.eof(); i++){
-            vector<int> temp{};
-            string x;
-            std::getline(inlinkFile, x);
-            for(char &c : x){
-                if(c != ','){
-                    int s;
-                    s = c-'0';
-                    temp.push_back(s);
-                }
-            }
-            inLinkVector.push_back(temp);
-        }
-    }
-    inlinkFile.close();
+    indexList.push_back(urlList.size());
 
     //initializing OUTLINKS vector
     fstream outLinkFile;
