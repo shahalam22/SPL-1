@@ -7,7 +7,6 @@ using namespace std;
 
 //creating relevent vectors
 vector<string> urlList{};
-vector<string> idList{};
 vector<int> indexList{};
 //creating webpages
 vector<Page> webPages{};
@@ -19,7 +18,7 @@ void updateGraph(){
     webPages.clear();
     for(int i=0; i<urlList.size(); i++){
         Page tempPage;
-        tempPage.initializeData(urlList.at(i), idList.at(i), indexList.at(i), outLinkVector.at(i));
+        tempPage.initializeData(urlList.at(i), indexList.at(i), outLinkVector.at(i));
         webPages.push_back(tempPage);
     }
 }
@@ -47,8 +46,6 @@ void addNewPage(){
 
     cout << "Enter URL of the new page - ";
     cin >> newURL;
-    cout << "Enter ID of the new page - ";
-    cin >> newId;
     cout << "Enter number of OutLinks - ";
     cin >> noOfOutlinks;
     cout << "Enter outlink nodes index - ";
@@ -60,7 +57,6 @@ void addNewPage(){
 
     //updating general values
     urlList.push_back(newURL);
-    idList.push_back(newId);
     indexList.push_back(webPages.size()+1);
     outLinkVector.push_back(newOutLinks);
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "socket.h"
 using namespace std;
 
 //making page class
@@ -8,21 +9,17 @@ class Page{
     private: 
 
     string url;
-    string id;
     int index;
     bool isDanglingNode = true;
-    vector<int> outLinks{};
+    vector<string> outLinks;
     
     public:
 
     //initializing properties of an object of Page class
-    void initializeData(string address, string idNo, int indexNo, vector<int> out){
+    void initializeData(string address, int indexNo){
         url = address;
-        id = idNo;
         index = indexNo;
-        for(int i=0; i<out.size(); i++){
-            outLinks.push_back(out.at(i));
-        }
+        outLinks = listOfOutgoingURLs(address);
         if(outLinks.size()==0){
             isDanglingNode = true;
         }else{
@@ -32,15 +29,11 @@ class Page{
 
 
     //update properties of one page
-    void updateUrl(string address){
+    void updatePage(string address){
         url = address;
     }
 
-    void updateId(string idNo){
-        id = idNo;
-    }
-
-    void updateOutLinks(vector<int> out){
+    void updateOutLinks(vector<string> out){
         outLinks.clear();
         for(int i=0; i<out.size(); i++){
             outLinks.push_back(out.at(i));
@@ -56,13 +49,16 @@ class Page{
     //data printing function of the Page class
     void printPage(){
         cout << "URL of the page is : " << url << endl;
-        cout << "Id of the page is : " << id << endl;
         cout << "Index of the page is : " << index << endl;
-        cout << "OutLinks of this page - ";
-        for(int j=0; j<outLinks.size(); j++){
-            cout << outLinks.at(j) << " ";
+        if(outLinks.size() != 0){
+            cout << "OutLinks of this page - ";
+            for(int j=0; j<outLinks.size(); j++){
+                cout << outLinks.at(j) << " ";
+            }
+            cout << endl;
+        }else{
+            cout << "This is a dangling node." << endl;
         }
-        cout << endl;
         cout << endl;
     }
 
@@ -82,33 +78,28 @@ class Page{
         return url;
     }
 
-    string getId(){
-        return id;
-    }
-
     int getIndex(){
         return index;
     }
 
-    vector<int> getOutLinks(){
+    vector<string> getOutLinks(){
         return outLinks;
     }
 
 
-    //find neighbours
-    void Neighbours(vector<Page> webPages){
-        // outlinks
-        cout << "OutLink neighbours of this page : \n\n";
-        for(int i=0; i<outLinks.size(); i++){
-            for(int j=0; j<webPages.size(); j++){
-                if(outLinks.at(i) == webPages.at(j).getIndex()){
-                    cout << "URL of the page is : " << webPages.at(j).getName() << endl;
-                    cout << "Id of the page is : " << webPages.at(j).getId() << endl;
-                    cout << "Index of the page is : " << webPages.at(j).getIndex() << endl;
-                    cout << endl;
-                }
-            }
-        }
-        cout << endl;
-    }   
+    // //find neighbours
+    // void Neighbours(){
+    //     // outlinks
+    //     cout << "OutLink neighbours of this page : \n\n";
+    //     for(int i=0; i<outLinks.size(); i++){
+    //         for(int j=0; j<webPages.size(); j++){
+    //             if(outLinks.at(i) == webPages.at(j).getIndex()){
+    //                 cout << "URL of the page is : " << webPages.at(j).getName() << endl;
+    //                 cout << "Index of the page is : " << webPages.at(j).getIndex() << endl;
+    //                 cout << endl;
+    //             }
+    //         }
+    //     }
+    //     cout << endl;
+    // }   
 };

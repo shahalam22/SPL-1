@@ -4,10 +4,10 @@
 #include "graph.h"
 using namespace std;
 
-double generalMatrix[100][100];
-double googleMatrix[100][100];
-double pageRankProbability[100];
-int finalRankIndex[100];
+double generalMatrix[1000][1000];
+double googleMatrix[1000][1000];
+double pageRankProbability[1000];
+int finalRankIndex[1000];
 
 /*-- niche multiline comment e thaka gula onno file e add kora lagbe --*/
 /*graph.h e jokhon graph update hobe tokhon abar create matrix o kintu update hobe*/
