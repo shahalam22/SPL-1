@@ -159,7 +159,7 @@ string fetchHTML(const string& url) {
     }
 }
 
-vector<string> listOfOutgoingURLs(const string& url) {
+vector<string> listOfOutgoingURLs(const string& url, const string& mustContain) {
     string html = fetchHTML(url);
     vector<string> outLinks{};
     while (html.find("<a") != string::npos) {
@@ -167,7 +167,7 @@ vector<string> listOfOutgoingURLs(const string& url) {
             int start = html.find("href=\"");
             int end = html.find("\"", start + 6);
             string url = html.substr(start + 6, end - start - 6);
-            if(url.find("http") != string::npos){
+            if((url.find("http") != string::npos) && (url.find(mustContain) != string::npos)){
                 outLinks.push_back(url);
             }
             html = html.substr(end + 1);
@@ -178,12 +178,14 @@ vector<string> listOfOutgoingURLs(const string& url) {
 }
 
 // int main() {
-//     string url = "https://www.programiz.com"; // Change the URL as needed
+//     string url = "https://www.du.ac.bd/"; // Change the URL as needed
+
+//     string mustContain = "du";
 
 //     // string html = fetchHTML(url);
 //     // cout << html << endl;
 
-//     vector<string> outLinks = listOfOutgoingURLs(url);
+//     vector<string> outLinks = listOfOutgoingURLs(url, mustContain);
 
 //     for (auto x : outLinks) {
 //         cout << x << endl;
