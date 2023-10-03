@@ -27,7 +27,7 @@ bool hasPage(string URL){
 
 
 void createNewNode(string URL, string mustContain){
-    if(urlList.size() > 250 || hasPage(URL)){
+    if(urlList.size() > 20 || hasPage(URL)){
         return;
     }
 
@@ -119,11 +119,11 @@ void printDanglingPages(){
 }
 
 
-int main(){
-    initialize();
-    for(int i=0; i<webPages.size(); i++){
-        webPages.at(i).printPage();
-    }
+// int main(){
+//     initialize();
+//     for(int i=0; i<webPages.size(); i++){
+//         webPages.at(i).printPage();
+//     }
 
-    printDanglingPages();
-}
+//     printDanglingPages();
+// }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "graph.h"
+#include "graphCopy.h"
 using namespace std;
 
 double generalMatrix[1000][1000];
@@ -29,21 +29,27 @@ bool containsOrNot(vector<int> dNodes, int index){
 // Creating TRANSITION MATRIX FUNCTION with corresponding PROBABILITY
 void creatematrix(){
 
-    updateGraph();
+    initialize();
 
     // initializing matrix with zero
-    for(int i=1; i<=webPages.size(); i++){
-        for(int j=1; j<=webPages.size(); j++){
+    for(int i=0; i<webPages.size(); i++){
+        for(int j=0; j<webPages.size(); j++){
             generalMatrix[i][j] = 0;
         }
     }
     
     //updating probability of the graph according to outgoing links
-    for(int i=1; i<=webPages.size(); i++){
-        vector<int> outLinkDemo = webPages.at(i-1).getOutLinks();
+    for(int i=0; i<webPages.size(); i++){
+        // vector<int> outLinkDemo = webPages.at(i-1).getOutLinks();
+        // double outLinkProbability = (double)1/outLinkDemo.size();
+        // for(int j=1; j<=outLinkDemo.size(); j++){
+        //     generalMatrix[i][outLinkDemo.at(j-1)] = outLinkProbability;
+        // }
+
+        vector<int> outLinkDemo = webPages.at(i).getOutLinksIndex(webPages);
         double outLinkProbability = (double)1/outLinkDemo.size();
         for(int j=1; j<=outLinkDemo.size(); j++){
-            generalMatrix[i][outLinkDemo.at(j-1)] = outLinkProbability;
+            generalMatrix[i+1][outLinkDemo.at(j-1)] = outLinkProbability;
         }
     }
 }
@@ -51,7 +57,7 @@ void creatematrix(){
 
 // Page Rank initialize Function
 void initializePageRank(){
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         pageRankProbability[i] = (double)1/webPages.size();
     }
 }
@@ -61,10 +67,10 @@ void googleTransformation(){
 
     creatematrix();
 
-    int eMatrix[webPages.size()+1][1], etMatrix[1][webPages.size()+1];
-    int aMatrix[webPages.size()+1][1];
-    double teleportMatrix[webPages.size()+1][webPages.size()+1];
-    double scholasticMatrix[webPages.size()+1][webPages.size()+1];
+    int eMatrix[webPages.size()][1], etMatrix[1][webPages.size()];
+    int aMatrix[webPages.size()][1];
+    double teleportMatrix[webPages.size()][webPages.size()];
+    double scholasticMatrix[webPages.size()][webPages.size()];
     double df;
 
     cout << "Enter The DAMPING FACTOR (between 0 to 1): ";
@@ -73,7 +79,7 @@ void googleTransformation(){
 
 
     //initializing eMatrix & etMatrix
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         eMatrix[i][0] = 1;
         etMatrix[0][i] = 1;
     }
@@ -94,7 +100,7 @@ void googleTransformation(){
     //     cout << dNodes.at(i) << " ";
     // }
 
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         if(containsOrNot(dNodes, i)){
             aMatrix[i][0] = 1;
         }else{
@@ -110,9 +116,9 @@ void googleTransformation(){
 
 
     // initializing Teleportation Matrix, E = (e.et)/n
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         double x = (double)1/webPages.size();
-        for(int j=1; j<=webPages.size(); j++){
+        for(int j=0; j<webPages.size(); j++){
             teleportMatrix[i][j] = x*eMatrix[j][0]*etMatrix[0][j];
         }
     }
@@ -126,9 +132,9 @@ void googleTransformation(){
 
 
     // initializing Scholstic Matrix, S = H + a(et/n)
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         double x = (double)1/webPages.size();
-        for(int j=1; j<=webPages.size(); j++){
+        for(int j=0; j<webPages.size(); j++){
             scholasticMatrix[j][i] = generalMatrix[j][i] + ((double)aMatrix[j][0]*x*etMatrix[0][j]);
         }
     }
@@ -143,8 +149,8 @@ void googleTransformation(){
 
 
     // initializing GOOGLE Matrix G, = alpha*S + (1-alpha)*E
-    for(int i=1; i<=webPages.size(); i++){
-        for(int j=1; j<=webPages.size(); j++){
+    for(int i=0; i<webPages.size(); i++){
+        for(int j=0; j<webPages.size(); j++){
             googleMatrix[i][j] = (df*scholasticMatrix[i][j]) + ((1-df)*teleportMatrix[i][j]);
         }
     }
@@ -162,8 +168,8 @@ void googleTransformation(){
 // GOOGLE matrix printing Function
 void printGOOGLEMatrix(){
     cout << "GOOGLE Matrix: " << endl;
-    for(int i=1; i<=webPages.size(); i++){
-        for(int j=1; j<=webPages.size(); j++){
+    for(int i=0; i<webPages.size(); i++){
+        for(int j=0; j<webPages.size(); j++){
             printf("%7.5lf  ", googleMatrix[i][j]);
         }
         cout << endl;
@@ -174,8 +180,8 @@ void printGOOGLEMatrix(){
 // Transition matrix printing Function
 void printTransitionMatrix(){
     cout << "Transition Matrix: " << endl;
-    for(int i=1; i<=webPages.size(); i++){
-        for(int j=1; j<=webPages.size(); j++){
+    for(int i=0; i<webPages.size(); i++){
+        for(int j=0; j<webPages.size(); j++){
             // cout << generalMatrix[i][j] << "\t";
             printf("%7.2lf", generalMatrix[i][j]);
         }
@@ -187,7 +193,7 @@ void printTransitionMatrix(){
 // Page rank probability printing function
 void printPageRankProbability(double pageProbability[]){
     cout << "Page Rank Probability : ";
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         printf("%7.6lf  ", pageProbability[i]);
     }
     cout << endl;
@@ -196,15 +202,15 @@ void printPageRankProbability(double pageProbability[]){
 
 // FINAL PAGERANK PROBABILITY TO DEMONSTRATE THE FINAL RANKING OF THE PAGES
 void finalRankOfPages(){
-    double demo[webPages.size()+1];
-    for(int i=1; i<=webPages.size(); i++){
+    double demo[webPages.size()];
+    for(int i=0; i<webPages.size(); i++){
         demo[i] = pageRankProbability[i];
         // cout << demo[i] << endl;
     }
 
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         int max = i;
-        for(int j=1; j<=webPages.size(); j++){
+        for(int j=0; j<webPages.size(); j++){
             if(demo[max]<demo[j]){
                 max = j;
             }
@@ -220,7 +226,7 @@ void finalRankOfPages(){
 // CONVERGE function
 bool isConverge(double demoPageProbability[]){
     bool flag = true;
-    for(int i=1; i<=webPages.size(); i++){
+    for(int i=0; i<webPages.size(); i++){
         if(demoPageProbability[i]!=pageRankProbability[i]){
             flag = false;
         }
@@ -235,17 +241,19 @@ void pageIterationPrintable(){
     initializePageRank();
     googleTransformation();     // page iteration diye amra pageRank ber korbo. page rank amra generalMatrix noy borong googleMatrix diye ber korbo. tai age googleTransformation() function diye googleMatrix initialize kore nite hobe.
 
-    double demoPageProbability[webPages.size()+1];
+    double demoPageProbability[webPages.size()];
     int i = 0;
 
-    while(1){
-        for(int i=1; i<=webPages.size(); i++){
-            demoPageProbability[i] = pageRankProbability[i];
-        }
+    for(int j=0; j<webPages.size(); j++){
+        cout << pageRankProbability[j] << " ";
+        demoPageProbability[j] = pageRankProbability[j];
+    }
 
-        for(int j=1; j<=webPages.size(); j++){
+    while(1){
+
+        for(int j=0; j<webPages.size(); j++){
             double demo = 0;
-            for(int k=1; k<=webPages.size(); k++){
+            for(int k=0; k<webPages.size(); k++){
                 demo += pageRankProbability[k]*googleMatrix[k][j];
             }
             pageRankProbability[j] = demo;
@@ -269,17 +277,17 @@ void pageIteration(){
     initializePageRank();
     googleTransformation();     // page iteration diye amra pageRank ber korbo. page rank amra generalMatrix noy borong googleMatrix diye ber korbo. tai age googleTransformation() function diye googleMatrix initialize kore nite hobe.
 
-    double demoPageProbability[webPages.size()+1];
+    double demoPageProbability[webPages.size()];
     int i = 0;
 
     while(1){
-        for(int i=1; i<=webPages.size(); i++){
+        for(int i=0; i<webPages.size(); i++){
             demoPageProbability[i] = pageRankProbability[i];
         }
 
-        for(int j=1; j<=webPages.size(); j++){
+        for(int j=0; j<webPages.size(); j++){
             double demo = 0;
-            for(int k=1; k<=webPages.size(); k++){
+            for(int k=0; k<webPages.size(); k++){
                 demo += pageRankProbability[k]*googleMatrix[k][j];
             }
             pageRankProbability[j] = demo;
@@ -308,39 +316,26 @@ void printFinalRank(){
 
 
 
-// // MAIN FUNCTION
-// int main (void){
-
-// /* googleRank.h test starts */
-
-    // initialLoad();
-
+int main(){
     // creatematrix();
-    
-    // initializePageRank();
 
-    // printTransitionMatrix();
-    // cout << endl;
-
-    // // // to see google matrix, we have to call "googleTransformation()" function here. Otherwise without calling "pageIteration()" function we won't be able to see googleMatrix. Because only called "googleTransformation()" function inside "pageIteration()" function.
-    // // googleTransformation();
-    // // printGOOGLEMatrix(); 
-    // // cout << endl;
-
-    // printPageRankProbability(pageRankProbability);
-    // cout << endl;
-
-    // pageIteration();    // googleTransformation() function is calling here
-
-    // // printPageRankProbability(pageRankProbability);
-    // // cout << endl;
-
-
-    // finalRankOfPages();
-
+    // for(int i=0; i<webPages.size(); i++){
+    //     for(int j=0; j<webPages.size(); j++){
+    //         printf("%7.2lf", generalMatrix[i][j]);
+    //     }
+    //     cout << endl;
+    // }
     // printFinalRank();
 
+    // googleTransformation();
 
-// /* googleRank.h test ends */
+    // printGOOGLEMatrix();
 
-// }
+    // creatematrix();
+
+    // initializePageRank();
+    // printPageRankProbability(pageRankProbability);
+
+    pageIterationPrintable();
+
+}
