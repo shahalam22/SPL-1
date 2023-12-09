@@ -5,6 +5,7 @@
         "array": "cpp",
         "string_view": "cpp",
         "ostream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "chrono": "cpp"
     }
 }

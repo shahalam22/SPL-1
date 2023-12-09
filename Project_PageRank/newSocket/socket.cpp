@@ -1,5 +1,4 @@
 #include <iostream>
-#include <chrono>
 #include <cstring>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -9,9 +8,16 @@
 #include <vector>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include <thread>
+#include <mutex>
+#include <unordered_map>
 using namespace std;
 
 const int MAX_BUFFER_SIZE = INT16_MAX;
+std::mutex mtx; // Mutex for thread safety
+
+// Cache to store fetched HTML content
+std::unordered_map<string, string> cache;
 
 // Function to fetch HTML content from a URL using HTTP
 string fetchHTTP(const string& url, const string& port) {
@@ -139,78 +145,81 @@ string fetchHTTPS(const string& url, const string& port) {
     return htmlContent;
 }
 
-// Function to fetch HTML content from a URL (auto-detecting HTTP or HTTPS)
 string fetchHTML(const string& url) {
+    // Check if the content is cached
+    std::lock_guard<std::mutex> lock(mtx);
+    if (cache.find(url) != cache.end()) {
+        return cache[url];
+    }
+
+    // If not cached, fetch the content
+    string htmlContent;
     size_t protocolPos = url.find("://");
     if (protocolPos == string::npos) {
         // If no protocol is specified, try HTTP by default
-        return fetchHTTP(url, "80");
+        htmlContent = fetchHTTP(url, "80");
+    } else {
+        string protocol = url.substr(0, protocolPos);
+        if (protocol == "http") {
+            // Use HTTP (port 80)
+            htmlContent = fetchHTTP(url.substr(protocolPos + 3), "80");
+        } else if (protocol == "https") {
+            // Use HTTPS
+            htmlContent = fetchHTTPS(url.substr(protocolPos + 3), "443");
+        } else {
+            cerr << "Unsupported protocol in URL: " << protocol << endl;
+            return "";
+        }
     }
 
-    string protocol = url.substr(0, protocolPos);
-    if (protocol == "http") {
-        // Use HTTP (port 80)
-        return fetchHTTP(url.substr(protocolPos + 3), "80");
-    } else if (protocol == "https") {
-        // Use HTTPS
-        return fetchHTTPS(url.substr(protocolPos + 3), "443");
-    } else {
-        cerr << "Unsupported protocol in URL: " << protocol << endl;
-        return "";
-    }
+    // Cache the fetched content
+    cache[url] = htmlContent;
+    return htmlContent;
 }
 
 vector<string> listOfOutgoingURLs(const string& url) {
-
-
-//    auto start = std::chrono::high_resolution_clock::now();
-
     string html = fetchHTML(url);
-
-/*    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-    std::cout << "Parsing time: " << duration.count() << " seconds" << std::endl;
-*/
-
-            //cout << "HTML data fetching done" << endl;
-
-    std::string urlCopy(url);
-
-
-//   start = std::chrono::high_resolution_clock::now();
-
     vector<string> outLinks{};
     while (html.find("<a") != string::npos) {
         if (html.find("href=\"") != string::npos) {
             int start = html.find("href=\"");
             int end = html.find("\"", start + 6);
             string url = html.substr(start + 6, end - start - 6);
-            if (url.find(urlCopy) != string::npos) {
+            if (url.find("http") != string::npos) {
                 outLinks.push_back(url);
             }
             html = html.substr(end + 1);
         }
     }
-
-/*    end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration2 = end - start;
-    std::cout << "Listing time: " << duration2.count() << " seconds" << std::endl;
-*/
-
     return outLinks;
 }
 
-
-/*
-int main() {
-    string url = "https://www.prothomalo.com/"; // Change the URL as needed
-
+// Function to fetch outgoing URLs in parallel
+void processURL(const string& url) {
     vector<string> outLinks = listOfOutgoingURLs(url);
 
-    for (auto x : outLinks) {
-        cout << x << endl;
+    // Print links in a thread-safe manner
+    std::lock_guard<std::mutex> lock(mtx);
+    for (const auto& link : outLinks) {
+        cout << link << endl;
+    }
+}
+
+int main() {
+    vector<string> urls = {
+        "https://www.prothomalo.com/",
+        // Add more URLs as needed
+    };
+
+    vector<thread> threads;
+    for (const auto& url : urls) {
+        threads.emplace_back(processURL, url);
+    }
+
+    // Wait for all threads to finish
+    for (auto& thread : threads) {
+        thread.join();
     }
 
     return 0;
 }
-*/

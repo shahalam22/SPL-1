@@ -26,16 +26,18 @@ bool hasPage(string URL){
 }
 
 
-void createNewNode(string URL, string mustContain){
-    if(urlList.size() > 20 || hasPage(URL)){
+void createNewNode(string URL){
+    if(hasPage(URL)||urlList.size()>=25){
         return;
     }
 
+    urlList.push_back(URL);
+
     cout << "Creating new node for " << URL << endl;
 
-    vector<string> outLinks = listOfOutgoingURLs(URL, mustContain);
+    vector<string> outLinks = listOfOutgoingURLs(URL);
     Page tempPage;
-    tempPage.initializeData(URL, getIndexbyURL(URL), outLinks);
+    tempPage.initializeData(URL, webPages.size()+1, outLinks);
     webPages.push_back(tempPage);
 
 
@@ -43,7 +45,7 @@ void createNewNode(string URL, string mustContain){
     for(int i=0; i<outLinks.size(); i++){
         if(getIndexbyURL(outLinks.at(i)) == -1){
             urlList.push_back(outLinks.at(i));
-            createNewNode(outLinks.at(i), mustContain);
+            createNewNode(outLinks.at(i));
         }
     }
 }
@@ -55,12 +57,14 @@ void initialize(){
 
     cout << "Enter Target URL : " ;     // https://www.du.ac.bd/
     cin >> targetURL;
-    cout << "Must contain : ";          // du.ac.bd
-    cin >> mustContain;
+    /*cout << "Must contain : ";          // du.ac.bd
+    cin >> mustContain;*/
+
+    
+
+    createNewNode(targetURL);
 
     urlList.push_back(targetURL);
-
-    createNewNode(targetURL, mustContain);
    
 }
 
@@ -119,11 +123,11 @@ void printDanglingPages(){
 }
 
 
-// int main(){
-//     initialize();
-//     for(int i=0; i<webPages.size(); i++){
-//         webPages.at(i).printPage();
-//     }
+int main(){
+    initialize();
+    for(int i=0; i<webPages.size(); i++){
+        webPages.at(i).printPage();
+    }
 
-//     printDanglingPages();
-// }
+    printDanglingPages();
+}
