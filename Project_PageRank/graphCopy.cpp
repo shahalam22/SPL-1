@@ -26,28 +26,50 @@ bool hasPage(string URL){
 }
 
 
+/*
 void createNewNode(string URL){
-    if(hasPage(URL)||urlList.size()>=25){
+    if(hasPage(URL)){
         return;
     }
 
-    urlList.push_back(URL);
 
     cout << "Creating new node for " << URL << endl;
 
     vector<string> outLinks = listOfOutgoingURLs(URL);
     Page tempPage;
     tempPage.initializeData(URL, webPages.size()+1, outLinks);
-    webPages.push_back(tempPage);
 
+    if(!hasPage(URL)){
+        urlList.push_back(URL);
+        webPages.push_back(tempPage);
+    }
 
 
     for(int i=0; i<outLinks.size(); i++){
-        if(getIndexbyURL(outLinks.at(i)) == -1){
+        if(hasPage(outLinks.at(i))){
+            continue;
+        }
+        else{
             urlList.push_back(outLinks.at(i));
             createNewNode(outLinks.at(i));
         }
     }
+}
+*/
+
+void createNewNode(string URL){
+    if(hasPage(URL)){
+        return;
+    }
+
+    cout << "Creating new node for " << URL << endl;
+
+    vector<string> outLinks = listOfOutgoingURLs(URL);
+    Page tempPage;
+    tempPage.initializeData(URL, webPages.size()+1, outLinks);
+
+    urlList.push_back(URL);
+    webPages.push_back(tempPage);
 }
 
 
@@ -55,16 +77,21 @@ void initialize(){
     string targetURL; 
     string mustContain;
 
+/*
     cout << "Enter Target URL : " ;     // https://www.du.ac.bd/
     cin >> targetURL;
-    /*cout << "Must contain : ";          // du.ac.bd
-    cin >> mustContain;*/
-
+    //cout << "Must contain : ";          // du.ac.bd
+    //cin >> mustContain;
+*/
     
 
-    createNewNode(targetURL);
+    createNewNode("https://www.prothomalo.com");
 
-    urlList.push_back(targetURL);
+    for(int i=0; i<webPages.at(0).getOutLinks().size(); i++){
+        createNewNode(webPages.at(0).getOutLinks().at(i));
+    }
+
+//    urlList.push_back(targetURL);
    
 }
 
@@ -130,4 +157,9 @@ int main(){
     }
 
     printDanglingPages();
+
+    cout << endl << endl;
+
+    cout << urlList.size() << endl;
+    cout << webPages.size() << endl;
 }

@@ -1,18 +1,31 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <string>
 
-int main(){
-    fstream file;
-    file.open("index.html");
-    string line;
-    while(getline(file, line)){
-        if(line.find("<a") != string::npos){
-            if(line.find("href") != string::npos){
-                int start = line.find("href");
-                int end = line.find(">", start);
-                string url = line.substr(start+6, end-start-7);
-                cout << url << endl;
-            }
-        }
+std::string removeProtocol(const std::string& url) {
+    std::string httpPrefix = "http://";
+    std::string httpsPrefix = "https://";
+
+    // Check if the URL starts with "http://"
+    if (url.compare(0, httpPrefix.length(), httpPrefix) == 0) {
+        return url.substr(httpPrefix.length());
     }
+
+    // Check if the URL starts with "https://"
+    if (url.compare(0, httpsPrefix.length(), httpsPrefix) == 0) {
+        return url.substr(httpsPrefix.length());
+    }
+
+    // If no prefix is found, return the original URL
+    return url;
+}
+
+int main() {
+    std::string url;
+    std::cout << "Enter the URL: ";
+    std::getline(std::cin, url);
+
+    std::string cleanedUrl = removeProtocol(url);
+    std::cout << "Cleaned URL: " << cleanedUrl << std::endl;
+
+    return 0;
 }

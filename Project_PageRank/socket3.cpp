@@ -1,3 +1,5 @@
+// fetching html code using LIBCURL library
+
 #include <iostream>
 #include <curl/curl.h>
 
@@ -18,7 +20,7 @@ int main() {
 
     if (curl) {
         // Set the URL to fetch
-        const char* url = "https://www.prothomalo.com/";
+        const char* url = "https://www.prothomalo.com/bangladesh/mys4oko96c";
         curl_easy_setopt(curl, CURLOPT_URL, url);
 
         // Set the callback function to write fetched data
