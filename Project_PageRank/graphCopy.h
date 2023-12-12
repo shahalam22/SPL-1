@@ -26,37 +26,6 @@ bool hasPage(string URL){
 }
 
 
-/*
-void createNewNode(string URL){
-    if(hasPage(URL)){
-        return;
-    }
-
-
-    cout << "Creating new node for " << URL << endl;
-
-    vector<string> outLinks = listOfOutgoingURLs(URL);
-    Page tempPage;
-    tempPage.initializeData(URL, webPages.size()+1, outLinks);
-
-    if(!hasPage(URL)){
-        urlList.push_back(URL);
-        webPages.push_back(tempPage);
-    }
-
-
-    for(int i=0; i<outLinks.size(); i++){
-        if(hasPage(outLinks.at(i))){
-            continue;
-        }
-        else{
-            urlList.push_back(outLinks.at(i));
-            createNewNode(outLinks.at(i));
-        }
-    }
-}
-*/
-
 void createNewNode(string URL){
     if(hasPage(URL)){
         return;
@@ -77,15 +46,13 @@ void initialize(){
     string targetURL; 
     string mustContain;
 
-/*
+
     cout << "Enter Target URL : " ;     // https://www.du.ac.bd/
     cin >> targetURL;
     //cout << "Must contain : ";          // du.ac.bd
     //cin >> mustContain;
-*/
-    
 
-    createNewNode("https://www.prothomalo.com");
+    createNewNode(targetURL);
 
     for(int i=0; i<webPages.at(0).getOutLinks().size(); i++){
         createNewNode(webPages.at(0).getOutLinks().at(i));
@@ -149,7 +116,7 @@ void printDanglingPages(){
     }
 }
 
-
+/*
 int main(){
     initialize();
     for(int i=0; i<webPages.size(); i++){
@@ -163,3 +130,4 @@ int main(){
     cout << urlList.size() << endl;
     cout << webPages.size() << endl;
 }
+*/

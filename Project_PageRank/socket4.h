@@ -185,6 +185,7 @@ vector<string> listOfOutgoingURLs(const string& url) {
 
     string html = getHTML(newUrl);
 
+
     std::string urlCopy(url);
 
 
@@ -211,8 +212,6 @@ vector<string> listOfOutgoingURLs(const string& url) {
         }
     }
 
-
-
 /*
     vector<string> outLinks{};
     while (html.find("<a") != string::npos) {
@@ -228,10 +227,10 @@ vector<string> listOfOutgoingURLs(const string& url) {
     }
 */
 
-
-
     return outLinks;
 }
+
+
 
 /*
 int main() {
