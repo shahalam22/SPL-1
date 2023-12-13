@@ -69,6 +69,10 @@ void googleTransformation(){
 
     creatematrix();
 
+    if(webPages.size()<=1){
+        return;
+    }
+
     int eMatrix[webPages.size()][1], etMatrix[1][webPages.size()];
     int aMatrix[webPages.size()][1];
     double teleportMatrix[webPages.size()][webPages.size()];
@@ -277,9 +281,11 @@ void pageIteration(){
 
         //checking convergence
         if(isConverge(demoPageProbability)){
+            /*
             cout << "Final Page Rank Probability - " << endl;
             printPageRankProbability(pageRankProbability);
             cout << endl << endl;
+            */
             break;
         }
 
@@ -292,12 +298,18 @@ void pageIteration(){
 
 
 void printFinalRank(){
+
     pageIteration();
+
+    if(webPages.size()<=1){
+        return;
+    }
+
     finalRankOfPages();
 
     cout << "\tRank\tIndex\tURL\tProbability" << endl;
-    for(int i=1; i<=webPages.size(); i++){
-        cout << "\t" << i << "\t" << finalRankIndex[i] << "\t" << webPages.at(finalRankIndex[i]).getName() << "\t" << pageRankProbability[finalRankIndex[i]] << "\n";
+    for(int i=0; i<webPages.size(); i++){
+        cout << "\t" << i+1 << "\t" << finalRankIndex[i] << "\t" << webPages.at(finalRankIndex[i]).getName() << "\t" << pageRankProbability[finalRankIndex[i]] << "\n";
     }
     cout << endl;
 

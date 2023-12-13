@@ -12,6 +12,8 @@
 
 using namespace std;
 
+vector<string> seedWebsites;
+vector<string> linksToVisit;
 
 std::string removeProtocol(const std::string& url) {
     std::string httpPrefix = "http://";
@@ -185,7 +187,9 @@ vector<string> listOfOutgoingURLs(const string& url) {
 
     string html = getHTML(newUrl);
 
+
     std::string urlCopy(url);
+
 
     vector<string> outLinks{};
     while (html.find("<a") != string::npos) {
@@ -228,17 +232,70 @@ vector<string> listOfOutgoingURLs(const string& url) {
     return outLinks;
 }
 
+bool pageContainsText(string url, string text){
+    string html = getHTML(url);
+    if(html.find(text) != string::npos){
+        return true;
+    }
+    return false;
+}
+
+bool hasPage(string URL){
+    for(int i=0; i<linksToVisit.size(); i++){
+        if(linksToVisit.at(i) == URL){
+            return true;
+        }
+    }
+    return false;
+}
+
+vector<string> getLinks(string  text){
+    seedWebsites.push_back("https://en.wikipedia.org/wiki/Wikipedia:Contents");
+    seedWebsites.push_back("https://www.ft.com");
+    seedWebsites.push_back("https://www.aljazeera.com");
+    seedWebsites.push_back("https://www.bbc.com/news");
+    seedWebsites.push_back("https://techcrunch.com");
+    seedWebsites.push_back("https://www.wired.com");
+
+    for(int i=0; i<seedWebsites.size(); i++){
+        vector<string> outLinks = listOfOutgoingURLs(seedWebsites[i]);
+        for(int j=0; j<outLinks.size(); j++){
+            if(!hasPage(outLinks.at(i))){
+                linksToVisit.push_back(outLinks.at(i));
+            }
+        }
+    }
+
+    for(int i=0; i<linksToVisit.size(); i++){
+        vector<string> outLinks = listOfOutgoingURLs(linksToVisit[i]);
+        for(int j=0; j<outLinks.size(); j++){
+            if(!hasPage(outLinks.at(i))){
+                linksToVisit.push_back(outLinks.at(i));
+            }
+        }
+    }
+
+    vector<string> linksContainsText;
+    for(int i=0; i<linksToVisit.size(); i++){
+        if(pageContainsText(linksToVisit[i], text)){
+            linksContainsText.push_back(linksToVisit[i]);
+        }
+    }
+
+    return linksContainsText;
+}
 
 
-/*
 int main() {
-    std::string url;
-    std::cout << "Enter the URL: ";
-    std::getline(std::cin, url);
+    std::string text;
+    std::cout << "Enter the TEXT: ";
+    std::getline(std::cin, text);
 
-    url = removeProtocol(url);
+    //url = removeProtocol(url);
 
-    vector<string> outLinks = listOfOutgoingURLs(url);
+    //vector<string> outLinks = listOfOutgoingURLs(url);
+
+    vector<string> outLinks = getLinks(text);
 
     for (int i = 0; i < outLinks.size(); i++) {
         cout << outLinks[i] << endl;
@@ -249,4 +306,3 @@ int main() {
 
     return 0;
 }
-*/

@@ -31,7 +31,7 @@ void createNewNode(string URL){
         return;
     }
 
-    cout << "Creating new node for " << URL << endl;
+    //cout << "Creating new node for " << URL << endl;
 
     vector<string> outLinks = listOfOutgoingURLs(URL);
     Page tempPage;
@@ -43,14 +43,14 @@ void createNewNode(string URL){
 
 
 void initialize(){
-    string targetURL; 
-    string mustContain;
-
+    string targetURL;
 
     cout << "Enter Target URL : " ;     // https://www.du.ac.bd/
     cin >> targetURL;
     //cout << "Must contain : ";          // du.ac.bd
     //cin >> mustContain;
+
+    cout << "Please Wait..." << endl;
 
     createNewNode(targetURL);
 
