@@ -11,6 +11,7 @@ int main(){
     int choice;
 
     while(1){
+        cout << endl << endl;
         cout << "WELCOME to the DASHBOARD" << endl << endl;
         cout << "Analysis webpages ranking using different algorithms" << endl;
         cout << "Please select the algorithm you want to run" << endl << endl;
